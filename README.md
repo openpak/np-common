@@ -13,7 +13,7 @@ OpenPak's PS3 Common Library.
 | Package | What |
 | --- | --- |
 | `ticket` | Unchanged firmware envelope, Ed25519 verification, avatar capabilities, and current-account/link verification |
-| `coreclient`, `accountpb` | Account core gRPC client and generated protocol |
+| `coreclient` | Account core gRPC client (protocol from `github.com/openpak/account-api`) |
 | `identity`, `onlineid` | Consistent NP link provisioning and numeric identity |
 | `events` | Per-process standing cache and core invalidation consumer |
 | `tlsfront`, `nphttp` | PS3 firmware TLS and bounded HTTP listener lifecycle |

@@ -8,7 +8,7 @@ Shared Go primitives for OpenPak's independent PS3 services. No daemon or image.
 
 - `ticket`: unchanged firmware envelope, Ed25519 verification, avatar capabilities,
   and current-account/link verification.
-- `coreclient`, `accountpb`: account core gRPC client and generated protocol.
+- `coreclient`: account core gRPC client (protocol from `github.com/openpak/account-api`).
 - `identity`, `onlineid`: consistent NP link provisioning and numeric identity.
 - `events`: per-process standing cache and core invalidation consumer.
 - `tlsfront`, `nphttp`: PS3 firmware TLS and bounded HTTP listener lifecycle.
