@@ -1,19 +1,41 @@
-# np-common
+# PS3 Common Library
 
-Shared Go primitives for OpenPak's independent PS3 services. No daemon or image.
+OpenPak's PS3 Common Library.
 
-- `ticket`: unchanged firmware envelope, Ed25519 verification, avatar capabilities,
-  and current-account/link verification.
-- `coreclient`, `accountpb`: account core gRPC client and generated protocol.
-- `identity`, `onlineid`: consistent NP link provisioning and numeric identity.
-- `events`: per-process standing cache and core invalidation consumer.
-- `tlsfront`, `nphttp`: PS3 firmware TLS and bounded HTTP listener lifecycle.
-- `resource`: captured firmware resource signature framing.
-- `fakecore`: in-process core for protocol/integration tests and isolated labs.
+| | |
+| --- | --- |
+| Network | PlayStation 3 |
+| Language | Go module `openpak/np-common` |
+| Licence | AGPL-3.0-only |
 
-Services use `replace openpak/np-common => ../np-common` and commit `vendor/`,
-matching the Switch pattern. Each service image builds from its own repository.
-After changing this module refresh and test every consumer's vendor tree.
+## Packages
 
-`GOWORK=off go test ./...` and `GOWORK=off go vet ./...` verify this module.
-See [wire provenance](docs/provenance.md). AGPL-3.0-only.
+| Package | What |
+| --- | --- |
+| `ticket` | Unchanged firmware envelope, Ed25519 verification, avatar capabilities, and current-account/link verification |
+| `coreclient`, `accountpb` | Account core gRPC client and generated protocol |
+| `identity`, `onlineid` | Consistent NP link provisioning and numeric identity |
+| `events` | Per-process standing cache and core invalidation consumer |
+| `tlsfront`, `nphttp` | PS3 firmware TLS and bounded HTTP listener lifecycle |
+| `resource` | Captured firmware resource signature framing |
+| `fakecore` | In-process core for protocol/integration tests and isolated labs |
+
+## Use
+
+```go
+import "openpak/np-common/ticket"
+```
+
+Each service uses `replace openpak/np-common => ../np-common` and commits `vendor/`; details in [deploy](docs/deploy.md).
+
+## Docs
+
+- [Protocol](docs/protocol.md)
+- [Evidence](docs/evidence.md)
+- [Deploy](docs/deploy.md)
+- [Notes](docs/notes.md)
+- [Wire provenance](docs/provenance.md)
+
+## Licence
+
+AGPL-3.0-only. See [LICENSE](LICENSE).
