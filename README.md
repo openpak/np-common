@@ -32,7 +32,6 @@ Each service uses `replace openpak/np-common => ../np-common` and commits `vendo
 
 - [Protocol](docs/protocol.md)
 - [Deploy](docs/deploy.md)
-- [Notes](docs/notes.md)
 - [Wire provenance](docs/provenance.md)
 
 ## Licence
