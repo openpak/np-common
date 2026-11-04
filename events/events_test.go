@@ -101,3 +101,14 @@ func TestGateRefusesDeniedAccountsWithoutAskingTheCore(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestConsumerPurgeRunsOnlyForAccountDeleted(t *testing.T) {
+	p := &fakePoll{evs: []coreclient.Event{ev(1, "account_banned", "a"), ev(2, "account_deleted", "c")}}
+	var purged []string
+	c := &Consumer{Core: p, State: NewState(), Purge: func(_ context.Context, a string) error { purged = append(purged, a); return nil }}
+	c.ProcessOnce(context.Background())
+	c.ProcessOnce(context.Background())
+	if len(purged) != 1 || purged[0] != "c" {
+		t.Fatalf("purged %v", purged)
+	}
+}

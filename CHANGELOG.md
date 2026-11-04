@@ -1,5 +1,10 @@
 # Changelog: np-common
 
+## v0.2.0 - 2026-11-04
+
+- `events.Consumer.Purge` (optional): called once per `account_deleted` event so a service can drop its own
+  per-account rows (account erasure, card #120). Unset keeps the old behaviour (cut sessions only).
+
 ## v0.1.2 — 2026-11-03
 
 - New `httplog` package: one stderr line per request, `http <method> <path> -> <status> <duration>ms`.
