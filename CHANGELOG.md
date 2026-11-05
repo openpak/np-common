@@ -1,5 +1,13 @@
 # Changelog: np-common
 
+## v0.3.0 - 2026-11-05
+
+- `ticket`: a game's ticket-request cookie (24 bytes) can ride in the NP ticket. `Identity.Cookie` (not part of the
+  JSON claims) is written as a 13th field after the firmware's twelve, inside the signed envelope, and `Verify`
+  returns it. `Verify` now measures the envelope instead of assuming 272 bytes, so tickets with and without a cookie
+  both verify; the firmware field order is untouched. Needed by Demonware (Modern Warfare 3 PS3), which uses the cookie
+  as the 3DES key of its auth reply (openpak/prds#132).
+
 ## v0.2.1 - 2026-11-04
 
 - New `capture` package and `NP_CAPTURE_DIR` in `nphttp.Run`: full request capture to daily

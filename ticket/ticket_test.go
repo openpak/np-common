@@ -112,3 +112,40 @@ func TestBirthFields(t *testing.T) {
 		}
 	}
 }
+
+func TestRequestCookieIsSignedAndOptional(t *testing.T) {
+	_, key, _ := ed25519.GenerateKey(rand.Reader)
+	now := time.Date(2026, 11, 5, 12, 0, 0, 0, time.UTC)
+	s, _ := New(key, func() time.Time { return now })
+	id := Identity{AccountID: "account-one", LinkID: "link-one", OnlineID: "AndroidTest", Country: "us", Service: "IV0002-BLES01428_00", ConsoleID: "console"}
+	plain, _ := s.Issue(id, time.Hour)
+	if got, e := s.Verify(plain); e != nil || got.Cookie != nil {
+		t.Fatalf("no-cookie ticket: %+v %v", got, e)
+	}
+	id.Cookie = []byte("0123456789abcdefghijklmn")
+	withCookie, e := s.Issue(id, time.Hour)
+	if e != nil {
+		t.Fatal(e)
+	}
+	got, e := s.Verify(withCookie)
+	if e != nil || string(got.Cookie) != "0123456789abcdefghijklmn" || got.OnlineID != "AndroidTest" {
+		t.Fatalf("cookie ticket: %+v %v", got, e)
+	}
+	// the firmware fields keep their order and size; the cookie only follows them
+	if binary.BigEndian.Uint16(withCookie[10:]) != 8 || len(withCookie) != len(plain)+4+CookieSize {
+		t.Fatal("cookie disturbed the firmware fields")
+	}
+	// the cookie is covered by the signature
+	forged := append([]byte(nil), withCookie...)
+	forged[len(plain)-40] ^= 1
+	if _, e := s.Verify(forged); e == nil {
+		t.Fatal("tampered ticket accepted")
+	}
+	if _, e := s.Verify(append(append([]byte(nil), withCookie...), []byte("device-extension")...)); e != nil {
+		t.Fatal("extension after a cookie ticket rejected", e)
+	}
+	id.Cookie = []byte("short")
+	if _, e := s.Issue(id, time.Hour); e == nil {
+		t.Fatal("bad cookie size accepted")
+	}
+}
